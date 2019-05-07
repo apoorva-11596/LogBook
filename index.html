@@ -5,112 +5,206 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script>document.getElementsByTagName("html")[0].className += " js";</script>
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/search.css">
+  
   <title>Responsive Vertical Timeline | CodyHouse</title>
+ <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">
+      <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+      <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+   
+  <script>
+
+function getSearchData() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+     document.getElementById("demo").innerHTML = this.responseText;
+     alert(this.responseText);_
+    }
+  };
+  
+  xhttp.open("GET", "https://jvioo0k6x5.execute-api.us-west-2.amazonaws.com/beta/hotels", true);
+      xhttp.setRequestHeader("Access-Control-Allow-Origin",  "localhost");
+
+   xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+     xhttp.setRequestHeader("Access-Control-Allow-Credentials", "true");
+     xhttp.setRequestHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+ xhttp.setRequestHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+  xhttp.send();
+}
+
+var map = new Map(); 	
+window.onload = function(){
+
+
+getSearchData();
+
+
+  //  var arrStr = "[{\"type\":\"windows\",\"message\":\"as\"},{\"type\":\"windows\",\"message\":\"s\"},{\"type\":\"windows\",\"message\":\"s\"},{\"type\":\"windows\",\"message\":\"s\"},{\"type\":\"windows\",\"message\":\"s\"} ]";
+var arrStr="[{\"log_type\":\"duo-auth\",\"account_name\":\"pratisharma\",\"domain_name\":\"expedia expeso sso\",\"user_name\":\"pratisharma\",\"destination_host_name\":\"\",\"destination_ip_address\":\"\",\"source_host_name\":\"\",\"source_ip_address\":\"165.225.106.165\",\"security_vertical\":\"\",\"ip_range\":\"-\",\"location\":\"in\",\"event_code\":\"\",\"event_type\":\"duo-auth\",\"result\":\"failure\",\"severity\":\"\",\"event_time_source_timezone\":\"2019-05-02T04:40:32\",\"event_ingestion_time_utc\":\"2019-05-02T05:02:01\",\"message\":\"no response\",\"file_name\":\"\",\"file_path\":\"\",\"file_hash\":\"\",\"file_access_type\":\"\",\"process_name\":\"\",\"vendor\":\"duo-security\",\"score\":\"\",\"partition_date\":\"2019-05-02\"},{\"log_type\":\"duo-auth\",\"account_name\":\"pratisharma\",\"domain_name\":\"expedia expeso sso\",\"user_name\":\"pratisharma\",\"destination_host_name\":\"\",\"destination_ip_address\":\"\",\"source_host_name\":\"\",\"source_ip_address\":\"165.225.106.165\",\"security_vertical\":\"\",\"ip_range\":\"-\",\"location\":\"in\",\"event_code\":\"\",\"event_type\":\"duo-auth\",\"result\":\"success\",\"severity\":\"\",\"event_time_source_timezone\":\"2019-05-02T04:41:22\",\"event_ingestion_time_utc\":\"2019-05-02T05:02:01\",\"message\":\"user approved\",\"file_name\":\"\",\"file_path\":\"\",\"file_hash\":\"\",\"file_access_type\":\"\",\"process_name\":\"\",\"vendor\":\"duo-security\",\"score\":\"\",\"partition_date\":\"2019-05-02\"},{\"log_type\":\"unix\",\"account_name\":\"pratisharma\",\"domain_name\":\"\",\"user_name\":\"pratisharma\",\"destination_host_name\":\"ip-10-0-1-68\",\"destination_ip_address\":\"10.0.1.68\",\"source_host_name\":\"ip-10-0-1-68\",\"source_ip_address\":\"10.0.1.68\",\"security_vertical\":\"\",\"ip_range\":\"-\",\"location\":\"\",\"event_code\":\"sudo\",\"event_type\":\"privileged-access\",\"result\":\"authentication success\",\"severity\":\"\",\"event_time_source_timezone\":\"2019-05-02T08:24:58.000+00:00\",\"event_ingestion_time_utc\":\"2019-05-02T08:24:59\",\"message\":\"logname=pratisharma uid=68021 euid=0 tty=\/dev\/pts\/1 ruser=pratisharma rhost= user=pratisharma\",\"file_name\":\"\",\"file_path\":\"\",\"file_hash\":\"\",\"file_access_type\":\"\",\"process_name\":\"\",\"vendor\":\"\",\"score\":\"\",\"partition_date\":\"2019-05-02\"}]";
+    var arr=JSON.parse(arrStr);
+//   var myObj = {
+//   fred: { type: "windows", messages: "ji", bananas: 7, melons: 0 },
+//   mary: {  type: "windows", messages: "ji", bananas: 0, melons: 0 },
+//   sarah: {  type: "windows", messages: "ji", bananas: 0, melons: 5 }
+// };
+
+var str ='';
+for (i = 0; i < arr.length; i++) 
+{
+	var id = "id" + i;
+
+    str+= '<div class="cd-timeline__block">';
+
+      //str+='<div class="cd-timeline__img cd-timeline__img--picture">';
+    //  str+='<img src="assets/img/cd-icon-picture.svg" alt="Picture">'
+    //str+='<font id="test" size="6" style="font-size: 200%;">'+arr[i].log_type.charAt(0)+'</font>';
+    var className=null;
+    var dataMap = new Map();
+    var showMap = new Map();
+    var logo = arr[i].log_type.charAt(0);
+
+    dataMap.set('Source IP Address',arr[i].source_ip_address);
+    dataMap.set('Source Host Name',arr[i].source_host_name);
+   	dataMap.set('Destination IP Address',arr[i].destination_ip_address);
+   	dataMap.set('Destination Host Name',arr[i].destination_host_name);
+   	dataMap.set('Domain',arr[i].domain_name);
+
+   	console.log(dataMap);
+
+
+   	map.set(id,dataMap);
+
+    if(arr[i].log_type == "duo-auth") 
+    {
+    	console.log(arr[i].log_type);
+    	className = "duo-auth"
+    	str+='<div id=""class="cd-timeline__img '+className+'">';
+
+    	logo = arr[i].log_type.substr(0,3);
+
+    	showMap.set('Event Type',arr[i].event_type);
+    	showMap.set('Event Code',arr[i].event_code);
+    	showMap.set('Result',arr[i].result);
+    }
+    else if(arr[i].log_type == "unix")
+    {
+    	console.log(arr[i].log_type);
+    	className = "unix"
+    	str+='<div id=""class="cd-timeline__img '+className+'">';
+
+    	showMap.set('Event Type',arr[i].event_type);
+    	showMap.set('Event Code',arr[i].event_code);
+
+    	if(arr[i].event_code == "sudo")
+    		showMap.set('Result',arr[i].result);
+    	else
+    		showMap.set('Result',arr[i].message);
+
+    	//str+='<div id=""class="cd-timeline__img cd-timeline__img--picture '+className+'">';
+    }
+    else if(arr[i].log_type == "windows")
+    {	
+    	console.log(arr[i].log_type);
+
+    	className = "windows"
+    	str+='<div id=""class="cd-timeline__img '+className+'">';
+    	logo = arr[i].log_type.charAt(0);
+
+    	showMap.set('Event Type',arr[i].event_type);
+    	showMap.set('Event Code',arr[i].event_code);
+		showMap.set('Result',arr[i].message);
+
+    }
+    else
+    {
+    	console.log(arr[i].log_type);
+    	str+='<div class="cd-timeline__img cd-timeline__img--picture">';
+    	showMap.set('Event Type',arr[i].event_type);
+    	showMap.set('Event Code',arr[i].event_code);
+		showMap.set('Result',arr[i].message);
+    }
+    
+    console.log(showMap);
+    
+    str+='<font size="6" style="font-size: 200%;text-transform: uppercase;">'+logo+'</font>';
+    
+    str+='</div>';
+    str+='<div id='+id+' class="cd-timeline__content text-component">'
+    str+='<h2 style="text-transform: capitalize;">'+showMap.get("Result")+'</h2>';
+    str+='    <p>Event Type : '+showMap.get('Event Type')+'</p>';
+    str+='    <p>Event Code : '+showMap.get("Event Type")+'</p>';
+      // str+='    <p>'+arr[i].destination_ip_address+'</p>';
+      // str+='    <p>'+arr[i].destination_ip_address+'</p>';
+      //str+='<p class="text--subtle">'+ arr[i].message+'</p>'
+      str+='<div class="flex flex--space-between flex--center-y">';
+      str+='  <span class="cd-timeline__date">'+arr[i].event_ingestion_time_utc+'</span>';
+      str+='  </div>  </div>  </div>';
+  }
+
+  //document.write(document.getElementById("timeline_blocks").innerHTML=str)
+  document.getElementById("timeline_blocks").innerHTML=str;
+  playAnimation();
+
+}
+
+</script>
+
 </head>
 <body>
+	 
 	<header class="cd-main-header text--center flex flex--column flex--center">
-    <h1>Responsive Vertical Timeline</h1>
-    <p class="margin-top--sm">👈<a class="text--inherit" href="https://codyhouse.co/gem/vertical-timeline/">Article &amp; Download</a></p>
-	</header>
+	<div class="s002">
+       <form>
+         <fieldset>
+           <legend>LogBook</legend>
+         </fieldset>
+         <div class="inner-form">
+           <div class="input-field first-wrap">
+             <input id="search" type="text" placeholder="User to search" />
+           </div>
+       <div class="input-field second-wrap">
+             <input class="datepicker" id="depart" type="text" placeholder="Start Time" />
+           </div>
+           <div class="input-field third-wrap">
+             <input class="datepicker" id="return" type="text" placeholder="End Time" />
+           </div>
+           <div class="input-field fifth-wrap">
+             <button class="btn-search" type="button">SEARCH</button>
+           </div>
+         </div>
+       </form>
+     </div>
+     	
+    </header>
 
 	<section class="cd-timeline js-cd-timeline">
-		<div class="container container--lg cd-timeline__container">
-			<div class="cd-timeline__block">
-				<div class="cd-timeline__img cd-timeline__img--picture">
-					<img src="assets/img/cd-icon-picture.svg" alt="Picture">
-				</div> <!-- cd-timeline__img -->
-
-				<div class="cd-timeline__content text-component">
-					<h2>Title of section 1</h2>
-					<p class="text--subtle">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? Iste voluptatibus minus veritatis qui ut.</p>
-
-          <div class="flex flex--space-between flex--center-y">
-            <span class="cd-timeline__date">Jan 14</span>
-            <a href="#0" class="btn btn--subtle">Read more</a>
-          </div>
-				</div> <!-- cd-timeline__content -->
-			</div> <!-- cd-timeline__block -->
-
-			<div class="cd-timeline__block">
-				<div class="cd-timeline__img cd-timeline__img--movie">
-					<img src="assets/img/cd-icon-movie.svg" alt="Movie">
-				</div> <!-- cd-timeline__img -->
-
-				<div class="cd-timeline__content text-component">
-					<h2>Title of section 2</h2>
-					<p class="text--subtle">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde?</p>
-					
-          <div class="flex flex--space-between flex--center-y">
-            <span class="cd-timeline__date">Jan 18</span>
-            <a href="#0" class="btn btn--subtle">Read more</a>
-          </div>
-				</div> <!-- cd-timeline__content -->
-			</div> <!-- cd-timeline__block -->
-
-			<div class="cd-timeline__block">
-				<div class="cd-timeline__img cd-timeline__img--picture">
-					<img src="assets/img/cd-icon-picture.svg" alt="Picture">
-				</div> <!-- cd-timeline__img -->
-
-				<div class="cd-timeline__content text-component">
-					<h2>Title of section 3</h2>
-					<p class="text--subtle">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi, obcaecati, quisquam id molestias eaque asperiores voluptatibus cupiditate error assumenda delectus odit similique earum voluptatem doloremque dolorem ipsam quae rerum quis. Odit, itaque, deserunt corporis vero ipsum nisi eius odio natus ullam provident pariatur temporibus quia eos repellat consequuntur perferendis enim amet quae quasi repudiandae sed quod veniam dolore possimus rem voluptatum eveniet eligendi quis fugiat aliquam sunt similique aut adipisci.</p>
-
-          <div class="flex flex--space-between flex--center-y">
-            <span class="cd-timeline__date">Jan 24</span>
-            <a href="#0" class="btn btn--subtle">Read more</a>
-          </div>
-				</div> <!-- cd-timeline__content -->
-			</div> <!-- cd-timeline__block -->
-
-			<div class="cd-timeline__block">
-				<div class="cd-timeline__img cd-timeline__img--location">
-					<img src="assets/img/cd-icon-location.svg" alt="Location">
-				</div> <!-- cd-timeline__img -->
-
-				<div class="cd-timeline__content text-component">
-					<h2>Title of section 4</h2>
-					<p class="text--subtle">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? Iste voluptatibus minus veritatis qui ut.</p>
-
-					<div class="flex flex--space-between flex--center-y">
-            <span class="cd-timeline__date">Feb 14</span>
-            <a href="#0" class="btn btn--subtle">Read more</a>
-          </div>
-				</div> <!-- cd-timeline__content -->
-			</div> <!-- cd-timeline__block -->
-
-			<div class="cd-timeline__block">
-				<div class="cd-timeline__img cd-timeline__img--location">
-					<img src="assets/img/cd-icon-location.svg" alt="Location">
-				</div> <!-- cd-timeline__img -->
-
-				<div class="cd-timeline__content text-component">
-					<h2>Title of section 5</h2>
-					<p class="text--subtle">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum.</p>
-
-          <div class="flex flex--space-between flex--center-y">
-            <span class="cd-timeline__date">Feb 18</span>
-            <a href="#0" class="btn btn--subtle">Read more</a>
-          </div>
-				</div> <!-- cd-timeline__content -->
-			</div> <!-- cd-timeline__block -->
-
-			<div class="cd-timeline__block">
-				<div class="cd-timeline__img cd-timeline__img--movie">
-					<img src="assets/img/cd-icon-movie.svg" alt="Movie">
-				</div> <!-- cd-timeline__img -->
-
-				<div class="cd-timeline__content text-component">
-					<h2>Final Section</h2>
-					<p class="text--subtle">This is the content of the last section</p>
-
-					<div class="flex flex--space-between flex--center-y">
-            <span class="cd-timeline__date">Feb 26</span>
-          </div>
-				</div> <!-- cd-timeline__content -->
-			</div> <!-- cd-timeline__block -->
+		<div class="container container--lg cd-timeline__container" id="timeline_blocks">
+			
 		</div>
+		<div id='xyz'></div>
 	</section> <!-- cd-timeline -->
   <script src="assets/js/main.js"></script>
+<script src="assets/js/extention/choices.js"></script>
+     <script src="assets/js/extention/flatpickr.js"></script>
+     <script>
+       flatpickr(".datepicker",
+       {
+         enableTime: true,
+         dateFormat: "Y-m-d H:i"
+       });
+     </script>
+
+     <script>
+       const choices = new Choices('[data-trigger]',
+       {
+         searchEnabled: false,
+         itemSelectText: '',
+       });
+     </script>
+
+
 </body>
 </html>
