@@ -20,6 +20,8 @@
 
   <script>
 
+var CJList = ["172.32.35.85"];
+
 function getSearchData() {
 
   var user=document.getElementById('search').value;
@@ -31,6 +33,9 @@ function getSearchData() {
     if (this.readyState == 4 && this.status == 200) {
     // document.getElementById("demo").innerHTML = this.responseText;
   //   alert(this.responseText);
+  console.log(this.responseText);
+
+
      loadSearchResult(this.responseText);
     }
   };
@@ -42,128 +47,163 @@ var params = 'orem=ipsum&name=binny';
 
 //getSearchData();
 var map = new Map();
+
+
 function loadSearchResult(arrStr){
 
-
-
-
-  //  var arrStr = "[{\"type\":\"windows\",\"message\":\"as\"},{\"type\":\"windows\",\"message\":\"s\"},{\"type\":\"windows\",\"message\":\"s\"},{\"type\":\"windows\",\"message\":\"s\"},{\"type\":\"windows\",\"message\":\"s\"} ]";
-/*var arrStr="[{\"log_type\":\"duo-auth\",\"account_name\":\"pratisharma\",\"domain_name\":\"expedia expeso sso\",\"user_name\":\"pratisharma\",\"destination_host_name\":\"\",\"destination_ip_address\":\"\",\"source_host_name\":\"\",\"source_ip_address\":\"165.225.106.165\",\"security_vertical\":\"\",\"ip_range\":\"-\",\"location\":\"in\",\"event_code\":\"\",\"event_type\":\"duo-auth\",\"result\":\"failure\",\"severity\":\"\",\"event_time_source_timezone\":\"2019-05-02T04:40:32\",\"event_ingestion_time_utc\":\"2019-05-02T05:02:01\",\"message\":\"no response\",\"file_name\":\"\",\"file_path\":\"\",\"file_hash\":\"\",\"file_access_type\":\"\",\"process_name\":\"\",\"vendor\":\"duo-security\",\"score\":\"\",\"partition_date\":\"2019-05-02\"},{\"log_type\":\"duo-auth\",\"account_name\":\"pratisharma\",\"domain_name\":\"expedia expeso sso\",\"user_name\":\"pratisharma\",\"destination_host_name\":\"\",\"destination_ip_address\":\"\",\"source_host_name\":\"\",\"source_ip_address\":\"165.225.106.165\",\"security_vertical\":\"\",\"ip_range\":\"-\",\"location\":\"in\",\"event_code\":\"\",\"event_type\":\"duo-auth\",\"result\":\"success\",\"severity\":\"\",\"event_time_source_timezone\":\"2019-05-02T04:41:22\",\"event_ingestion_time_utc\":\"2019-05-02T05:02:01\",\"message\":\"user approved\",\"file_name\":\"\",\"file_path\":\"\",\"file_hash\":\"\",\"file_access_type\":\"\",\"process_name\":\"\",\"vendor\":\"duo-security\",\"score\":\"\",\"partition_date\":\"2019-05-02\"},{\"log_type\":\"unix\",\"account_name\":\"pratisharma\",\"domain_name\":\"\",\"user_name\":\"pratisharma\",\"destination_host_name\":\"ip-10-0-1-68\",\"destination_ip_address\":\"10.0.1.68\",\"source_host_name\":\"ip-10-0-1-68\",\"source_ip_address\":\"10.0.1.68\",\"security_vertical\":\"\",\"ip_range\":\"-\",\"location\":\"\",\"event_code\":\"sudo\",\"event_type\":\"privileged-access\",\"result\":\"authentication success\",\"severity\":\"\",\"event_time_source_timezone\":\"2019-05-02T08:24:58.000+00:00\",\"event_ingestion_time_utc\":\"2019-05-02T08:24:59\",\"message\":\"logname=pratisharma uid=68021 euid=0 tty=\/dev\/pts\/1 ruser=pratisharma rhost= user=pratisharma\",\"file_name\":\"\",\"file_path\":\"\",\"file_hash\":\"\",\"file_access_type\":\"\",\"process_name\":\"\",\"vendor\":\"\",\"score\":\"\",\"partition_date\":\"2019-05-02\"}]";
-*/
     var arrTemp=JSON.parse(arrStr);
      var arr=JSON.parse(arrTemp);
 
-var str ='';
-for (i = 0; i < arr.length; i++)
-{
-	var id = "id" + i;
+     console.log(arr);
 
-    str+= '<div class="cd-timeline__block">';
-
-      //str+='<div class="cd-timeline__img cd-timeline__img--picture">';
-    //  str+='<img src="assets/img/cd-icon-picture.svg" alt="Picture">'
-    //str+='<font id="test" size="6" style="font-size: 200%;">'+arr[i].log_type.charAt(0)+'</font>';
-    var className=null;
-    var dataMap = new Map();
-    var showMap = new Map();
-    var logo = arr[i].log_type.charAt(0);
-
-    dataMap.set('Source IP Address',arr[i].source_ip_address);
-    dataMap.set('Source Host Name',arr[i].source_host_name);
-   	dataMap.set('Destination IP Address',arr[i].destination_ip_address);
-   	dataMap.set('Destination Host Name',arr[i].destination_host_name);
-   	dataMap.set('Domain',arr[i].domain_name);
-
-   	console.log(dataMap);
+     var str ='';
+     if(arr.length == 0)
+     {
+     		str+= '<div class="cd-timeline__block">'
+     		str+='<h3>No records for the User is found. Either User does not exist or Try changing the dates</h3>'
+     		str+='</div>'
 
 
-   	map.set(id,dataMap);
+     		document.getElementById("body").classList.add("test");
+     }
+     else
+     {
+     	for (i = 0; i < arr.length; i++)
+			{
+			var id = "id" + i;
 
-    if(arr[i].log_type == "duo-auth")
-    {
-    	console.log(arr[i].log_type);
-    	className = "duo-auth"
-    	str+='<div id=""class="cd-timeline__img '+className+'">';
+		    str+= '<div class="cd-timeline__block">';
 
-    	logo = arr[i].log_type.substr(0,2);
+		      //str+='<div class="cd-timeline__img cd-timeline__img--picture">';
+		    //  str+='<img src="assets/img/cd-icon-picture.svg" alt="Picture">'
+		    //str+='<font id="test" size="6" style="font-size: 200%;">'+arr[i].log_type.charAt(0)+'</font>';
+		    var className=null;
+		    var dataMap = new Map();
+		    var serious = false;
+		    var logo = arr[i].log_type.charAt(0);
 
-    	showMap.set('Event Type',arr[i].event_type);
-    	showMap.set('Event Code',arr[i].event_code);
-    	showMap.set('Result',"Duo Login "+arr[i].result);
-    }
-    else if(arr[i].log_type == "unix")
-    {
-    	console.log(arr[i].log_type);
-    	className = "unix"
-    	str+='<div id=""class="cd-timeline__img '+className+'">';
+		    dataMap.set('Source IP Address',arr[i].source_ip_address);
+		    dataMap.set('Source Host Name',arr[i].source_host_name);
+		   	dataMap.set('Destination IP Address',arr[i].destination_ip_address);
+		   	dataMap.set('Destination Host Name',arr[i].destination_host_name);
+		   	dataMap.set('Domain',arr[i].domain_name);
 
-    	showMap.set('Event Type',arr[i].event_type);
-    	showMap.set('Event Code',arr[i].event_code);
-      var prefix="";
-      if(arr[i].message.includes("session opened") || arr[i].message.includes("accepted password")){
-        prefix="Connected "
-      }
-      else if (arr[i].message.includes("session closed")){
-        prefix="Disconnected "
-      }
-      if(arr[i].destination_host_name !=null)
-      showMap.set('Destination',prefix+arr[i].destination_host_name);
-      else
-      showMap.set('Destination',prefix+arr[i].destination_ip_address);
+		   	//console.log(dataMap);
+		   	//console.log(CJList);
+		   	//console.log(arr[i].destination_ip_address);
+		   	if(CJList.includes(arr[i].destination_ip_address))
+		   	{
+		   		serious = true;
+		   		//console.log(serious);
+		   	}
 
-    	if(arr[i].event_code == "sudo")
-    		showMap.set('Result',"sudo root operation performed");
-    	else
-    		showMap.set('Result',showMap.get("Destination"));
 
-    	//str+='<div id=""class="cd-timeline__img cd-timeline__img--picture '+className+'">';
-    }
-    else if(arr[i].log_type == "windows")
-    {
-    	console.log(arr[i].log_type);
+		   	map.set(id,dataMap);
 
-    	className = "windows"
-    	str+='<div id=""class="cd-timeline__img '+className+'">';
-    	logo = arr[i].log_type.charAt(0);
+		    if(arr[i].log_type == "duo-auth")
+		    {
+		    	//console.log(arr[i].log_type);
+		    	className = "duo-auth"
+		    	str+='<div id=""class="cd-timeline__img '+className+'">';
 
-      if(arr[i].destination_host_name !=null)
-      showMap.set('Destination',arr[i].destination_host_name);
-      else
-      showMap.set('Destination',arr[i].destination_ip_address);
+		    	logo = arr[i].log_type.substr(0,2);
 
-    	showMap.set('Event Type',arr[i].event_type);
-  	showMap.set('Result',showMap.get("Destination"));
+		    	dataMap.set('Event Type',arr[i].event_type);
+		    	dataMap.set('Event Code',arr[i].event_code);
+		    	dataMap.set('Result',"Duo Login "+arr[i].result);
+		    }
+		    else if(arr[i].log_type == "unix")
+		    {
+		    	//console.log(arr[i].log_type);
+		    	className = "unix"
+		    	str+='<div id=""class="cd-timeline__img '+className+'">';
 
-    }
-    else
-    {
-    	console.log(arr[i].log_type);
-    	str+='<div class="cd-timeline__img cd-timeline__img--picture">';
-    	showMap.set('Event Type',arr[i].event_type);
-    	showMap.set('Event Code',arr[i].event_code);
-		showMap.set('Result',arr[i].message);
-    }
+		    	dataMap.set('Event Type',arr[i].event_type);
+		    	dataMap.set('Event Code',arr[i].event_code);
+		      
+		      var prefix="";
+		      if(arr[i].message.includes("session opened") || arr[i].message.includes("accepted password")){
+		        prefix="Connected "
+		      }
+		      else if (arr[i].message.includes("session closed")){
+		        prefix="Disconnected "
+		      }
 
-    console.log(showMap);
+		      if(arr[i].destination_host_name !=null)
+		      dataMap.set('Destination',prefix+arr[i].destination_host_name);
+		      else
+		      dataMap.set('Destination',prefix+arr[i].destination_ip_address);
 
-    str+='<font size="6" style="font-size: 200%;text-transform: uppercase;">'+logo+'</font>';
+		    	if(arr[i].event_code == "sudo")
+		    		dataMap.set('Result',"sudo root operation performed");
+		    	else
+		    		dataMap.set('Result',dataMap.get("Destination"));
 
-    str+='</div>';
-    str+='<div id='+id+' onclick="showAjaxModal();" class="cd-timeline__content text-component " data-toggle="tooltip" title="Hooray!">'
-    str+='<h2 style="text-transform: capitalize;">'+showMap.get("Result")+'</h2>';
-    str+='    <p><b>Event Type</b> : '+showMap.get('Event Type')+' <pre>         </pre>  ';
-    str+='   <b> Event Code</b> : '+showMap.get("Event Type")+'</p>';
-    str+='    <p>Raw Message : '+arr[i].message+'</p>';
-      // str+='    <p>'+arr[i].destination_ip_address+'</p>';
-      // str+='    <p>'+arr[i].destination_ip_address+'</p>';
-      //str+='<p class="text--subtle">'+ arr[i].message+'</p>'
-      str+='<div class="flex flex--space-between flex--center-y">';
-      str+='  <span class="cd-timeline__date">'+arr[i].event_ingestion_time_utc+'</span>';
-      str+='  </div>  </div>  </div>';
-  }
+		    	//str+='<div id=""class="cd-timeline__img cd-timeline__img--picture '+className+'">';
+		    }
+		    else if(arr[i].log_type == "windows")
+		    {
+		    	//console.log(arr[i].log_type);
+
+		    	//console.log(arr[i]);
+		    	className = "windows"
+		    	str+='<div id=""class="cd-timeline__img '+className+'">';
+		    	logo = arr[i].log_type.charAt(0);
+
+		      if(arr[i].destination_host_name !=null)
+		      	dataMap.set('Destination',arr[i].destination_host_name);
+		      else
+		      	dataMap.set('Destination',arr[i].destination_ip_address);
+
+		    	dataMap.set('Event Type',arr[i].event_type);
+		    	dataMap.set('Event Code',arr[i].event_code);
+		  		dataMap.set('Result',dataMap.get("Destination"));
+
+		    }
+		    else
+		    {
+		    	//console.log(arr[i].log_type);
+		    	str+='<div class="cd-timeline__img cd-timeline__img--picture">';
+		    	dataMap.set('Event Type',arr[i].event_type);
+		    	dataMap.set('Event Code',arr[i].event_code);
+				dataMap.set('Result',arr[i].message);
+		    }
+
+
+		    str+='<font size="6" style="font-size: 150%;text-transform: uppercase; color: black;">'+logo+'</font>';
+
+		    str+='</div>';
+		    str+='<div id='+id+' onclick="showAjaxModal();" class="cd-timeline__content text-component ">'
+		    str+='<h2 style="text-transform: capitalize;">'+dataMap.get("Result");
+
+		    if(serious == true)
+		    {
+		    	str+='<img src="assets/img/image01.jpg" height="20px" width="20px">';
+		    }
+
+
+		    str+='</h2>';
+
+		    str+='    <p><b>Event Type</b> : '+dataMap.get('Event Type') + '</p>';
+		    str+='   <p><b> Event Code</b> : '+dataMap.get("Event Code")+'</p>';
+		    str+='   <p><b> Domain</b> : '+dataMap.get("Domain")+'</p>';
+		    str+='    <p>Raw Message : '+arr[i].message+'</p>';
+		      // str+='    <p>'+arr[i].destination_ip_address+'</p>';
+		      // str+='    <p>'+arr[i].destination_ip_address+'</p>';
+		      //str+='<p class="text--subtle">'+ arr[i].message+'</p>'
+		      str+='<div class="flex flex--space-between flex--center-y">';
+		      str+='  <span class="cd-timeline__date">'+arr[i].event_ingestion_time_utc+'</span>';
+		      str+='  </div>  </div>  </div>';
+		  }
+
+     }
+	
+	
 
   //document.write(document.getElementById("timeline_blocks").innerHTML=str)
+  document.getElementById("body").style.display="block";
   document.getElementById("timeline_blocks").innerHTML=str;
+
   playAnimation();
 
 }
@@ -191,7 +231,7 @@ function userDetails(){
 	<div class="s002">
        <form >
          <fieldset>
-           <legend>LogBook</legend>
+           <legend>Security Log Book</legend>
          </fieldset>
          <div class="inner-form">
            <div class="input-field first-wrap">
@@ -212,11 +252,12 @@ function userDetails(){
 
     </header>
 
-	<section class="cd-timeline js-cd-timeline">
-		<div class="container container--lg cd-timeline__container" id="timeline_blocks">
+	<section id="body" style="display: none;">
+		<section class="cd-timeline js-cd-timeline">
+		<div class="container container--lg cd-timeline__container " id="timeline_blocks">
 
 		</div>
-		<div id='xyz'></div>
+		</section>
 	</section> <!-- cd-timeline -->
   <script src="assets/js/main.js"></script>
 <script src="assets/js/extention/choices.js"></script>

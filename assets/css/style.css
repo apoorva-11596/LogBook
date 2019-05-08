@@ -1461,13 +1461,7 @@ u {
     color: var(--color-contrast-high)
 }
 
-.text-component ul,
-.text-component ol,
-.text-component p,
-.text-component blockquote {
-    margin-bottom: 0.75em;
-    margin-bottom: calc(var(--space-sm)*var(--text-vspace-multiplier))
-}
+
 
 .text-component ul,
 .text-component ol {
@@ -2179,6 +2173,22 @@ u {
     }
 }
 
+.test{
+	margin-top: 15%;
+	display: flex;
+	justify-content: center;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.sticky + .cd-timeline + .js-cd-timeline {
+  padding-top: 102px;
+}
+
 .cd-timeline__block {
     display: -ms-flexbox;
     display: flex;
@@ -2186,8 +2196,8 @@ u {
     justify-content: flex-end;
     position: relative;
     z-index: 1;
-    margin-bottom: 2em;
-    margin-bottom: var(--space-lg)
+    margin-bottom: 1em;
+    
 }
 
 .cd-timeline__block:last-child {
@@ -2231,7 +2241,15 @@ u {
 }
 
 .duo-auth{
-	background-color: red;
+	background-color: #F5DEB3;
+}
+
+.windows{
+	background-color: #F0F8FF;
+}
+
+.unix{
+	background-color: #C0C0C0;
 }
 
 .cd-timeline__img--picture {
@@ -2299,8 +2317,8 @@ u {
 }
 
 .cd-timeline__date {
-    color: hsla(207, 10%, 55%, 0.7);
-    color: hsla(var(--cd-color-3-h), var(--cd-color-3-s), var(--cd-color-3-l), 0.7)
+	font-size: 16px;
+	color : black;
 }
 
 @media (min-width: 64rem) {
