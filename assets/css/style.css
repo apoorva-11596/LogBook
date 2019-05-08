@@ -2259,7 +2259,7 @@ u {
     background: var(--color-white);
     border-radius: 0.25em;
     border-radius: var(--radius);
-    padding: 1.25em;
+    padding: 0.5em;
     padding: var(--space-md);
     box-shadow: 0 3px 0 hsl(205, 38%, 89%);
     box-shadow: 0 3px 0 var(--cd-color-2)
@@ -2289,13 +2289,13 @@ u {
         flex-grow: 0;
         will-change: transform;
         margin: 0;
-        font-size: 0.8em;
+        font-size: 0.6em;
         --line-height-multiplier: 1.2
     }
     .cd-timeline__content::before {
         top: 24px
     }
-    
+
 }
 
 .cd-timeline__date {
